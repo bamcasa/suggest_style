@@ -1,3 +1,4 @@
+from re import I
 from tkinter import *
 import json
 
@@ -17,11 +18,13 @@ def add_font():
     index = big_lb.get(big_lb.curselection())
     result = result | set(data[index])  # 합집합
 
+    indexs.append(index)
+
     # small_lb에 값 넣기
     small_lb_list = list(result)
 
     change_small_lb()
-    # var.set(result)
+    var.set(indexs)
 
 
 def remove_font():
@@ -29,11 +32,13 @@ def remove_font():
     index = big_lb.get(big_lb.curselection())
     result = result - set(data[index])  # 차집합
 
+    indexs.remove(index)
+
     # small_lb에 값 넣기
     small_lb_list = list(result)
 
     change_small_lb()
-    # var.set(result)
+    var.set(indexs)
 
 
 def change_small_lb():
@@ -42,6 +47,10 @@ def change_small_lb():
 
     for i in range(len(small_lb_list)):
         small_lb.insert(i, small_lb_list[i])
+
+
+def change_textbox():
+    var.set("ang")
 
 
 ####################################
@@ -53,6 +62,8 @@ ws.config(bg='#FFFFFF')
 
 var = StringVar()
 
+indexs = []
+
 width = 50
 height = 10
 
@@ -63,14 +74,15 @@ big_lb.insert(0, '타이틀')
 big_lb.insert(1, '본문')
 big_lb.insert(2, '포스터')
 
+disp = Label(ws, textvariable=var)
+disp.pack(pady=20)
 
 small_lb = Listbox(ws, width=width, height=height)
 small_lb.pack()
 
 small_lb_list = []
 
-disp = Label(ws, textvariable=var)
-disp.pack(pady=20)
+
 Button(ws, text='추가', command=add_font).pack()
 Button(ws, text='제거', command=remove_font).pack()
 
